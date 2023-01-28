@@ -1,35 +1,27 @@
 import { Environment } from "../../../environment";
 import { Api } from "../axios-config";
 
-export interface ListProps {
+export interface NoteProps {
   id: number;
-  email: string;
-  cidadeId: number;
-  nomeCompleto: string;
+  title: string;
+  value: string;
+  maxValue: string;
+  subject: string;
 }
 
-export interface ItemProps {
-  id: number;
-  email: string;
-  cidadeId: number;
-  nomeCompleto: string;
+export type NoteListProps = {
+  data: NoteProps[];
 }
 
-export type ListWithTotalType = {
-  data: ListProps[];
-  totalCount: number;
-}
-
-const getAll = async (page = 1, filter = ''): Promise<ListWithTotalType | Error> => {
+const getAll = async (): Promise<NoteListProps | Error> => {
   try {
-    const urlRelativa = `/list?_page=${page}&_limit=${Environment.LIMITE_DE_LINHAS}&nomeCompleto_like=${filter}`
+    const urlRelativa = `/note`
 
     const { data, headers } = await Api.get(urlRelativa);
 
     if (data) {
       return {
         data, 
-        totalCount: Number(headers['x-total-count'] || Environment.LIMITE_DE_LINHAS)
       }
     }
 
@@ -42,9 +34,9 @@ const getAll = async (page = 1, filter = ''): Promise<ListWithTotalType | Error>
   }
 };
 
-const getById = async (id: number): Promise<ItemProps | Error> => {
+const getById = async (id: number): Promise<NoteProps | Error> => {
   try {
-    const { data } = await Api.get(`/list/${id}`)
+    const { data } = await Api.get(`/note/${id}`)
 
     if(data) {
       return data;
@@ -58,9 +50,9 @@ const getById = async (id: number): Promise<ItemProps | Error> => {
   }
 };
 
-const create = async (payload: Omit<ItemProps, 'id'>): Promise<number | Error> => {
+const create = async (payload: Omit<NoteProps, 'id'>): Promise<number | Error> => {
   try {
-    const { data } = await Api.post<ItemProps>('/list', payload);
+    const { data } = await Api.post<NoteProps>('/note', payload);
 
     if(data) {
       return data.id
@@ -73,9 +65,9 @@ const create = async (payload: Omit<ItemProps, 'id'>): Promise<number | Error> =
   }
 };
 
-const updateById = async (id: number, payload: ItemProps): Promise<void | Error> => {
+const updateById = async (id: number, payload: NoteProps): Promise<void | Error> => {
   try {
-    const { data } = await Api.put(`/list/${id}`, payload);
+    const { data } = await Api.put(`/note/${id}`, payload);
 
   } catch (error) {
     console.error(error);
@@ -85,7 +77,7 @@ const updateById = async (id: number, payload: ItemProps): Promise<void | Error>
 
 const deleteById = async (id: number): Promise<void | Error> => {
   try {
-    const { data } = await Api.delete(`/list/${id}`)
+    const { data } = await Api.delete(`/note/${id}`)
 
   } catch (error) {
     console.error(error);
@@ -93,7 +85,7 @@ const deleteById = async (id: number): Promise<void | Error> => {
   }
 };
 
-export const ExampleService = {
+export const NoteService = {
 getAll,
 getById,
 create,
