@@ -13,11 +13,11 @@ export const LightTheme = createTheme({
       main: cyan[500],
       dark: cyan[400],
       light: cyan[300],
-      contrastText: '#ffffff',
+      contrastText: '#000000',
     },
     background: {
       default: '#f7f6f3',
       paper: '#ffffff',
-    }
+    },
   }
 });

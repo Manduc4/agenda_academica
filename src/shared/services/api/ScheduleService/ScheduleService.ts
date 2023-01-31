@@ -1,21 +1,22 @@
-import { Environment } from "../../../environment";
 import { Api } from "../axios-config";
 
-export interface SubjectProps {
+type dayOfWeek = 'segunda'|'terca'|'quarta'|'quinta'|'sexta'|'sabado'|'domingo'
+
+export interface ScheduleProps {
   id: number;
-  name: string;
-  abbreviation: string;
-  professor: string;
-  maxCollegeFaults: string;
+  subject: string;
+  dayOfWeek: dayOfWeek| '';
+  start: string;
+  end: string;
 }
 
-export type SubjectListProps = {
-  data: SubjectProps[];
+export type ScheduleListProps = {
+  data: ScheduleProps[];
 }
 
-const getAll = async (): Promise<SubjectListProps | Error> => {
+const getAll = async (): Promise<ScheduleListProps | Error> => {
   try {
-    const urlRelativa = `/subject`
+    const urlRelativa = `/schedule`
 
     const { data, headers } = await Api.get(urlRelativa);
 
@@ -34,9 +35,9 @@ const getAll = async (): Promise<SubjectListProps | Error> => {
   }
 };
 
-const getById = async (id: number): Promise<SubjectProps | Error> => {
+const getById = async (id: number): Promise<ScheduleProps | Error> => {
   try {
-    const { data } = await Api.get(`/subject/${id}`)
+    const { data } = await Api.get(`/schedule/${id}`)
 
     if(data) {
       return data;
@@ -50,9 +51,9 @@ const getById = async (id: number): Promise<SubjectProps | Error> => {
   }
 };
 
-const create = async (payload: Omit<SubjectProps, 'id'>): Promise<number | Error> => {
+const create = async (payload: Omit<ScheduleProps, 'id'>): Promise<number | Error> => {
   try {
-    const { data } = await Api.post<SubjectProps>('/subject', payload);
+    const { data } = await Api.post<ScheduleProps>('/schedule', payload);
 
     if(data) {
       return data.id
@@ -65,9 +66,9 @@ const create = async (payload: Omit<SubjectProps, 'id'>): Promise<number | Error
   }
 };
 
-const updateById = async (id: number, payload: SubjectProps): Promise<void | Error> => {
+const updateById = async (id: number, payload: ScheduleProps): Promise<void | Error> => {
   try {
-    const { data } = await Api.put(`/subject/${id}`, payload);
+    const { data } = await Api.put(`/schedule/${id}`, payload);
 
   } catch (error) {
     console.error(error);
@@ -77,7 +78,7 @@ const updateById = async (id: number, payload: SubjectProps): Promise<void | Err
 
 const deleteById = async (id: number): Promise<void | Error> => {
   try {
-    const { data } = await Api.delete(`/subject/${id}`)
+    const { data } = await Api.delete(`/schedule/${id}`)
 
   } catch (error) {
     console.error(error);
@@ -85,7 +86,7 @@ const deleteById = async (id: number): Promise<void | Error> => {
   }
 };
 
-export const SubjectService = {
+export const ScheduleService = {
 getAll,
 getById,
 create,

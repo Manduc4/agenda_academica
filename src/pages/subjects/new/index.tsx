@@ -89,6 +89,15 @@ const NewSubject: React.FC = () => {
     });
   };
 
+  const numberMask = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    const typeValue = Number(value);
+    const fieldName = event.target.name;
+    if (!Number.isNaN(typeValue) && value.length < 4) {
+      formik.setFieldValue(fieldName, value);
+    }
+  };
+
   useEffect(() => {
     if (params && params.id) {
       setTypePage("edit");
@@ -157,6 +166,7 @@ const NewSubject: React.FC = () => {
                 <TextField
                   {...formik.getFieldProps("maxCollegeFaults")}
                   label="Máximo de Faltas"
+                  onChange={numberMask}
                   fullWidth
                   error={Boolean(
                     touched.maxCollegeFaults && errors.maxCollegeFaults

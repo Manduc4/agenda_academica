@@ -14,19 +14,22 @@ import {
 } from "@mui/material";
 import { LayoutBaseDePagina } from "../../../shared/layouts";
 import { useEffect, useState } from "react";
-import { NoteProps, NoteService } from "../../../shared/services/api/NotetService/NoteServiceService";
+import {
+  CollegeFaultProps,
+  CollegeFaultService,
+} from "../../../shared/services/api/CollegeFaultService/CollegeFaultSevice";
 import { useNavigate } from "react-router-dom";
 import { Environment } from "../../../shared/environment";
 import { Box } from "@mui/material";
 
-export const NotesList = () => {
-  const [rows, setRows] = useState<NoteProps[]>();
+export const CollegeFaultList = () => {
+  const [rows, setRows] = useState<CollegeFaultProps[]>();
   const [isLoading, setIsLoading] = useState(0);
   const navigate = useNavigate();
 
   const handleDelete = (id: number) => {
     if (window.confirm("Deseja mesmo Apagar o registro?")) {
-      NoteService.deleteById(id)
+      CollegeFaultService.deleteById(id)
         .then((data) => {
           if (data instanceof Error) {
             console.log("error", data.message);
@@ -40,7 +43,7 @@ export const NotesList = () => {
   };
 
   useEffect(() => {
-    NoteService.getAll()
+    CollegeFaultService.getAll()
       .then((data) => {
         if (data instanceof Error) {
           window.alert(data.message);
@@ -70,7 +73,7 @@ export const NotesList = () => {
           textOverflow="ellipsis"
           alignSelf="start"
         >
-          Notas
+          Faltas
         </Typography>
         <Card
           sx={{
@@ -79,11 +82,8 @@ export const NotesList = () => {
           }}
         >
           <Box sx={{ display: "flex", justifyContent: "end" }}>
-            <Button
-              variant="contained"
-              onClick={() => navigate("/notas/nova")}
-            >
-              Nova Nota
+            <Button variant="contained" onClick={() => navigate("/faltas/nova")}>
+              Adicionar Faltas
             </Button>
           </Box>
           <TableContainer
@@ -94,20 +94,18 @@ export const NotesList = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Tipo</TableCell>
-                  <TableCell>Nota</TableCell>
-                  <TableCell>Nota Máxima</TableCell>
                   <TableCell>Disciplina</TableCell>
+                  <TableCell>Quantidade</TableCell>
+                  <TableCell>Máximo de Faltas</TableCell>
                   <TableCell>Ações</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {rows?.map((row) => (
                   <TableRow key={row.id}>
-                    <TableCell>{row.title}</TableCell>
-                    <TableCell>{row.value}</TableCell>
-                    <TableCell>{row.maxValue}</TableCell>
                     <TableCell>{row.subject}</TableCell>
+                    <TableCell>{row.quantity}</TableCell>
+                    <TableCell>{row.maxCollegeFaults}</TableCell>
                     <TableCell sx={{ padding: 1 }}>
                       <IconButton
                         size="small"
@@ -118,7 +116,7 @@ export const NotesList = () => {
                       <IconButton
                         size="small"
                         sx={{ padding: 1 }}
-                        onClick={() => navigate(`/disciplinas/${row.id}`)}
+                        onClick={() => navigate(`/faltas/${row.id}`)}
                       >
                         <Icon>edit</Icon>
                       </IconButton>

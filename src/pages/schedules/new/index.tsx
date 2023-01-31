@@ -2,7 +2,6 @@ import {
   Autocomplete,
   Button,
   Card,
-  Container,
   TextField,
   Typography,
 } from "@mui/material";
@@ -10,25 +9,25 @@ import { Form, FormikProvider, useFormik } from "formik";
 import * as Yup from "yup";
 import { LayoutBaseDePagina } from "../../../shared/layouts";
 import { Box, Stack } from "@mui/system";
-import {
-  CollegeFaultProps,
-  CollegeFaultService,
-} from "../../../shared/services/api/CollegeFaultService/CollegeFaultSevice";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
-  SubjectProps,
-  SubjectService,
-} from "../../../shared/services/api/SubjectService/SubjectService";
-import InputMask from "react-input-mask";
+  ScheduleProps,
+  ScheduleService,
+} from "../../../shared/services/api/ScheduleService/ScheduleService";
+import { SubjectService } from "../../../shared/services/api/SubjectService/SubjectService";
+import { daysOfWeek } from "../../../shared/utils/dateAndTime";
+import { LocalizationProvider, TimePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
-const NewCollegeFault: React.FC = () => {
+const NewSchedule: React.FC = () => {
   // edit
-  const [selected, setSelected] = useState<CollegeFaultProps>({
+  const [selected, setSelected] = useState<ScheduleProps>({
     id: 0,
-    quantity: "",
     subject: "",
-    maxCollegeFaults: "",
+    dayOfWeek: "",
+    start: "",
+    end: "",
   });
   const navigate = useNavigate();
   const params = useParams();
@@ -36,49 +35,50 @@ const NewCollegeFault: React.FC = () => {
   const [subjectList, setSubjectList] = useState<string[]>([]);
 
   const validationSchema = Yup.object().shape({
-    quantity: Yup.string().required("A quantidade é Obrigatório."),
     subject: Yup.string().required("A Disciplina é Obrigatória."),
-    maxCollegeFaults: Yup.string().required(
-      "O número máximo de faltas é Obrigatório."
-    ),
+    dayOfWeek: Yup.string().required("O dia da Semana é Obrigatório."),
+    start: Yup.string().required("O Horário de Início é Obrigatório."),
+    end: Yup.string().required("O Horário Final é Obrigatório."),
   });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      quantity: "",
       subject: "",
-      maxCollegeFaults: "",
+      dayOfWeek: "",
+      start: "",
+      end: "",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log("teste");
       const payload = {
-        quantity: values.quantity,
         subject: values.subject,
-        maxCollegeFaults: values.maxCollegeFaults,
-      } as CollegeFaultProps;
+        dayOfWeek: values.dayOfWeek,
+        start: values.start,
+        end: values.end,
+      } as ScheduleProps;
+      console.log('teste')
 
       typePage === "edit" ? Object.assign(payload, { id: selected.id }) : null;
 
       if (typePage === "new") {
-        CollegeFaultService.create(payload)
+        ScheduleService.create(payload)
           .then((data) => {
             if (data instanceof Error) {
               window.alert(data.message);
             }
-            navigate("/faltas");
+            navigate("/horarios");
           })
           .catch((error) => {
             console.log(error);
           });
       } else {
-        CollegeFaultService.updateById(selected.id, payload)
+        ScheduleService.updateById(selected.id, payload)
           .then((data) => {
             if (data instanceof Error) {
               window.alert(data.message);
             }
-            navigate("/faltas");
+            navigate("/horarios");
           })
           .catch((error) => {
             console.log("error", error);
@@ -87,10 +87,10 @@ const NewCollegeFault: React.FC = () => {
     },
   });
 
-  const { handleSubmit, touched, errors, getFieldProps } = formik;
+  const { handleSubmit, touched, errors, setFieldValue } = formik;
 
   const callEdit = () => {
-    CollegeFaultService.getById(Number(params.id)).then((data) => {
+    ScheduleService.getById(Number(params.id)).then((data) => {
       if (data instanceof Error) {
         window.alert("Houve um erro ao trazer o registro.");
       } else {
@@ -113,15 +113,6 @@ const NewCollegeFault: React.FC = () => {
       });
   };
 
-  const numberMask = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    const typeValue = Number(value);
-    const fieldName = event.target.name;
-    if (!Number.isNaN(typeValue) && value.length < 4) {
-      formik.setFieldValue(fieldName, value);
-    }
-  };
-
   useEffect(() => {
     if (params && params.id) {
       setTypePage("edit");
@@ -132,10 +123,10 @@ const NewCollegeFault: React.FC = () => {
 
   useEffect(() => {
     if (selected) {
-      formik.setFieldValue("quantity", selected.quantity);
       formik.setFieldValue("subject", selected.subject);
-      formik.setFieldValue("maxCollegeFaults", selected.maxCollegeFaults);
-      formik.setFieldValue("subject", selected.subject);
+      formik.setFieldValue("dayOfWeek", selected.dayOfWeek);
+      formik.setFieldValue("start", selected.start);
+      formik.setFieldValue("end", selected.end);
     }
   }, [selected]);
 
@@ -156,7 +147,7 @@ const NewCollegeFault: React.FC = () => {
           textOverflow="ellipsis"
           alignSelf="start"
         >
-          {typePage === "new" ? "Nova Falta" : selected.quantity}
+          {typePage === "new" ? "Novo Horário" : "Editar Horário"}
         </Typography>
         <Card
           sx={{
@@ -170,7 +161,7 @@ const NewCollegeFault: React.FC = () => {
                 <Autocomplete
                   {...formik.getFieldProps("subject")}
                   onChange={(event, value) => {
-                      formik.setFieldValue("subject", value);
+                    formik.setFieldValue("subject", value);
                   }}
                   options={subjectList}
                   getOptionLabel={(option) => option}
@@ -183,29 +174,62 @@ const NewCollegeFault: React.FC = () => {
                       helperText={touched.subject && errors.subject}
                     />
                   )}
-                />
-                <TextField
-                  {...formik.getFieldProps("quantity")}
-                  label="Quantidade"
+                />{" "}
+                <Autocomplete
+                  {...formik.getFieldProps("dayOfWeek")}
+                  onChange={(event, value) => {
+                    formik.setFieldValue("dayOfWeek", value);
+                  }}
+                  options={daysOfWeek}
+                  getOptionLabel={(option) => option}
                   fullWidth
-                  disabled={false}
-                  onChange={numberMask}
-                  error={Boolean(touched.quantity && errors.quantity)}
-                  helperText={touched.quantity && errors.quantity}
-                />
-
-                <TextField
-                  {...formik.getFieldProps("maxCollegeFaults")}
-                  label="Máximo de Faltas"
-                  fullWidth
-                  onChange={numberMask}
-                  error={Boolean(
-                    touched.maxCollegeFaults && errors.maxCollegeFaults
+                  renderInput={(props) => (
+                    <TextField
+                      label="Dia da Semana"
+                      {...props}
+                      error={Boolean(touched.dayOfWeek && errors.dayOfWeek)}
+                      helperText={touched.dayOfWeek && errors.dayOfWeek}
+                    />
                   )}
-                  helperText={
-                    touched.maxCollegeFaults && errors.maxCollegeFaults
-                  }
                 />
+                <LocalizationProvider
+                  dateAdapter={AdapterDayjs}
+                  adapterLocale={"pt-br"}
+                  sx={{ width: 450 }}
+                >
+                  <TimePicker
+                    {...formik.getFieldProps("start")}
+                    openTo="hours"
+                    onChange={(value) => {
+                      setFieldValue("start", value);
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Início"
+                        fullWidth
+                        error={Boolean(touched.start && errors.start)}
+                        helperText={touched.start && errors.start}
+                      />
+                    )}
+                  />
+                  <TimePicker
+                    {...formik.getFieldProps("end")}
+                    openTo="hours"
+                    onChange={(value) => {
+                      setFieldValue("end", value);
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Fim"
+                        fullWidth
+                        error={Boolean(touched.end && errors.end)}
+                        helperText={touched.end && errors.end}
+                      />
+                    )}
+                  />
+                </LocalizationProvider>
               </Stack>
               <Box
                 display="flex"
@@ -233,4 +257,4 @@ const NewCollegeFault: React.FC = () => {
   );
 };
 
-export default NewCollegeFault;
+export default NewSchedule;

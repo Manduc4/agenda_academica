@@ -16,6 +16,10 @@ import {
 } from "../../../shared/services/api/NotetService/NoteServiceService";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import {
+  SubjectProps,
+  SubjectService,
+} from "../../../shared/services/api/SubjectService/SubjectService";
 
 const NewNote: React.FC = () => {
   // edit
@@ -29,6 +33,7 @@ const NewNote: React.FC = () => {
   const navigate = useNavigate();
   const params = useParams();
   const [typePage, setTypePage] = useState<"new" | "edit">("new");
+  const [subjectList, setSubjectList] = useState<SubjectProps[]>([]);
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("O Título é Obrigatório."),
@@ -58,8 +63,7 @@ const NewNote: React.FC = () => {
       typePage === "edit" ? Object.assign(payload, { id: selected.id }) : null;
 
       if (typePage === "new") {
-        NoteService
-          .create(payload)
+        NoteService.create(payload)
           .then((data) => {
             if (data instanceof Error) {
               window.alert(data.message);
@@ -70,8 +74,7 @@ const NewNote: React.FC = () => {
             console.log(error);
           });
       } else {
-        NoteService
-          .updateById(selected.id, payload)
+        NoteService.updateById(selected.id, payload)
           .then((data) => {
             if (data instanceof Error) {
               window.alert(data.message);
@@ -97,11 +100,35 @@ const NewNote: React.FC = () => {
     });
   };
 
+  const getSubjectList = () => {
+    SubjectService.getAll()
+      .then((data) => {
+        if (data instanceof Error) {
+          window.alert(data.message);
+        } else {
+          setSubjectList(data.data);
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+
+  const numberMask = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    const typeValue = Number(value);
+    const fieldName = event.target.name;
+    if (!Number.isNaN(typeValue) && value.length < 4) {
+      formik.setFieldValue(fieldName, value);
+    }
+  };
+
   useEffect(() => {
     if (params && params.id) {
       setTypePage("edit");
       callEdit();
     }
+    getSubjectList();
   }, []);
 
   useEffect(() => {
@@ -143,7 +170,9 @@ const NewNote: React.FC = () => {
               <Stack direction="row" spacing={2}>
                 <Autocomplete
                   {...formik.getFieldProps("title")}
-                  onChange={(event, value) => formik.setFieldValue('title', value)}
+                  onChange={(event, value) =>
+                    formik.setFieldValue("title", value)
+                  }
                   options={[
                     "Prova",
                     "Trabalho",
@@ -165,6 +194,7 @@ const NewNote: React.FC = () => {
                 <TextField
                   {...formik.getFieldProps("value")}
                   label="Nota"
+                  onChange={numberMask}
                   fullWidth
                   error={Boolean(touched.value && errors.value)}
                   helperText={touched.value && errors.value}
@@ -172,16 +202,27 @@ const NewNote: React.FC = () => {
                 <TextField
                   {...formik.getFieldProps("maxValue")}
                   label="Nota Máxima"
+                  onChange={numberMask}
                   fullWidth
                   error={Boolean(touched.maxValue && errors.maxValue)}
                   helperText={touched.maxValue && errors.maxValue}
                 />
-                <TextField
+                <Autocomplete
                   {...formik.getFieldProps("subject")}
-                  label="Disciplina"
+                  onChange={(event, value) =>
+                    formik.setFieldValue("subject", value)
+                  }
+                  options={subjectList}
+                  getOptionLabel={(option) => (option.name ? option.name : "")}
                   fullWidth
-                  error={Boolean(touched.subject && errors.subject)}
-                  helperText={touched.subject && errors.subject}
+                  renderInput={(props) => (
+                    <TextField
+                      label="Disciplina"
+                      {...props}
+                      error={Boolean(touched.subject && errors.subject)}
+                      helperText={touched.subject && errors.subject}
+                    />
+                  )}
                 />
               </Stack>
               <Box
