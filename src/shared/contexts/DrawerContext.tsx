@@ -1,7 +1,9 @@
 import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { SvgIconProps } from "@mui/material";
+
 
 interface IDrawerOption {
-  icon: string;
+  icon: string | SvgIconProps;
   label: string;
   path: string;
 }

@@ -13,7 +13,7 @@ import { Box, Stack } from "@mui/system";
 import {
   NoteProps,
   NoteService,
-} from "../../../shared/services/api/NotetService/NoteServiceService";
+} from "../../../shared/services/api/NoteService/NoteServiceService";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {

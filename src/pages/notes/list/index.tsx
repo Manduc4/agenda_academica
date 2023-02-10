@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { LayoutBaseDePagina } from "../../../shared/layouts";
 import { useEffect, useState } from "react";
-import { NoteProps, NoteService } from "../../../shared/services/api/NotetService/NoteServiceService";
+import { NoteProps, NoteService } from "../../../shared/services/api/NoteService/NoteServiceService";
 import { useNavigate } from "react-router-dom";
 import { Environment } from "../../../shared/environment";
 import { Box } from "@mui/material";

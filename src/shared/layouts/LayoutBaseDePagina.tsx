@@ -27,6 +27,7 @@ export const LayoutBaseDePagina: React.FC<LayoutBaseDePaginaProps> = ({
       display="flex"
       flexDirection="column"
       gap={1}
+      // sx={{ marginTop: 0 }}
     >
       <Box p={1} display="flex" alignItems="center" gap={1}>
         {smDown && (
@@ -43,6 +44,8 @@ export const LayoutBaseDePagina: React.FC<LayoutBaseDePaginaProps> = ({
           flexDirection: "column",
           alignItems: "center",
           p: 8,
+          paddingTop: 5
+          // marginTop: 0
         }}
       >
         {children}
