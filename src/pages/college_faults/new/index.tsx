@@ -211,6 +211,7 @@ const NewCollegeFault: React.FC = () => {
                 display="flex"
                 flexDirection="row"
                 justifyContent="flex-end"
+                sx={{ alignItems: 'center'}}
                 gap={2}
                 mt={2}
               >

@@ -35,12 +35,12 @@ export const NavItem = ({ label, icon, route, onClick }) => {
       }}
       // {...others}
     >
-      <Link to={route} style={{ textDecoration: "none" }}>
+      <Link to={route} style={{ textDecoration: "none", width: '100%' }}>
         <Button
           component="a"
           startIcon={
             typeof icon === "string" ? (
-              <Icon sx={{ textDecoration: "none" }}>{icon}</Icon>
+              <Icon >{icon}</Icon>
             ) : (
               <Icon>{icon}</Icon>
             )
@@ -63,9 +63,6 @@ export const NavItem = ({ label, icon, route, onClick }) => {
             "&:hover": {
               backgroundColor: "rgba(255,255,255, 0.08)",
             },
-            textDecoration: "none",
-            textDecorationLine: "none",
-            textDecorationThickness: "none",
           }}
         >
           <Box sx={{ flexGrow: 1 }}>{label}</Box>

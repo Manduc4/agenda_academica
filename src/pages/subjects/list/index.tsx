@@ -14,6 +14,7 @@ import {
   Button,
   Card,
   Typography,
+  Stack,
 } from "@mui/material";
 import { LayoutBaseDePagina } from "../../../shared/layouts";
 import { useEffect, useState } from "react";
@@ -69,72 +70,69 @@ export const SubjectList = () => {
           minWidth: 700,
         }}
       >
-        <Typography
-          variant="h3"
-          overflow="hidden"
-          whiteSpace="nowrap"
-          textOverflow="ellipsis"
-          alignSelf="start"
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
         >
-          Disciplinas
-        </Typography>
-        <Card
-          sx={{
-            padding: 2,
-            mt: 4,
-          }}
-        >
-          <Box sx={{ display: "flex", justifyContent: "end" }}>
-            <Button
-              variant="contained"
-              onClick={() => navigate("/disciplinas/nova")}
-            >
-              Nova Disciplina
-            </Button>
-          </Box>
-          <TableContainer
-            component={Paper}
-            variant="outlined"
-            sx={{ width: "auto", marginTop: 2 }}
+          <Typography
+            variant="h3"
+            overflow="hidden"
+            whiteSpace="nowrap"
+            textOverflow="ellipsis"
+            alignSelf="start"
           >
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Nome</TableCell>
-                  <TableCell>Abreviação</TableCell>
-                  <TableCell>Professor</TableCell>
-                  <TableCell>Máximo de Faltas</TableCell>
-                  <TableCell>Ações</TableCell>
+            Disciplinas
+          </Typography>
+          <Button
+            variant="contained"
+            onClick={() => navigate("/disciplinas/nova")}
+          >
+            Nova Disciplina
+          </Button>
+        </Stack>
+        <TableContainer
+          component={Paper}
+          variant="outlined"
+          sx={{ width: "auto", marginTop: 4, minHeight: "100px" }}
+        >
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Nome</TableCell>
+                <TableCell>Abreviação</TableCell>
+                <TableCell>Professor</TableCell>
+                <TableCell>Máximo de Faltas</TableCell>
+                <TableCell>Ações</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows?.map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell>{row.name}</TableCell>
+                  <TableCell>{row.abbreviation}</TableCell>
+                  <TableCell>{row.professor}</TableCell>
+                  <TableCell>{row.maxCollegeFaults}</TableCell>
+                  <TableCell sx={{ padding: 1 }}>
+                    <IconButton
+                      size="small"
+                      onClick={() => handleDelete(row.id)}
+                    >
+                      <Icon>delete</Icon>
+                    </IconButton>
+                    <IconButton
+                      size="small"
+                      sx={{ padding: 1 }}
+                      onClick={() => navigate(`/disciplinas/${row.id}`)}
+                    >
+                      <Icon>edit</Icon>
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows?.map((row) => (
-                  <TableRow key={row.id}>
-                    <TableCell>{row.name}</TableCell>
-                    <TableCell>{row.abbreviation}</TableCell>
-                    <TableCell>{row.professor}</TableCell>
-                    <TableCell>{row.maxCollegeFaults}</TableCell>
-                    <TableCell sx={{ padding: 1 }}>
-                      <IconButton
-                        size="small"
-                        onClick={() => handleDelete(row.id)}
-                      >
-                        <Icon>delete</Icon>
-                      </IconButton>
-                      <IconButton
-                        size="small"
-                        sx={{ padding: 1 }}
-                        onClick={() => navigate(`/disciplinas/${row.id}`)}
-                      >
-                        <Icon>edit</Icon>
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Card>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Box>
     </LayoutBaseDePagina>
   );

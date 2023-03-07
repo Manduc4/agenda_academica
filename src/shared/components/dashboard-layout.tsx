@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 // import { AuthGuard } from './auth-guard';
 import { DashboardNavbar } from "./dashboard-navbar";
 import { DashboardSidebar } from "./dashboard-sidebar";
 import { useDrawerContext } from "../contexts";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const DashboardLayoutRoot = styled("div")(({ theme }) => ({
   display: "flex",
@@ -16,11 +17,16 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
   },
 }));
 
-export const DashboardLayout = (props) => {
-  const { children } = props;
+export const DashboardLayout = ({ children }) => {
+  const { toggleDrawerOpen } = useDrawerContext();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const { isDrawerOpen, toggleDrawerOpen, drawerOptions, setDrawerOptions } =
-    useDrawerContext();
+  useEffect(() => {
+    if (location.pathname === "/") {
+      navigate("/pagina-inicial");
+    }
+  }, []);
 
   return (
     // <AuthGuard>

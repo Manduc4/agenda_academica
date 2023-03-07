@@ -11,74 +11,85 @@ import { LayoutBaseDePagina } from "../../../shared/layouts";
 import { Box, Stack } from "@mui/system";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import {
-  ScheduleProps,
-  ScheduleService,
-} from "../../../shared/services/api/ScheduleService/ScheduleService";
 import { SubjectService } from "../../../shared/services/api/SubjectService/SubjectService";
 import { daysOfWeek } from "../../../shared/utils/dateAndTime";
-import { LocalizationProvider, TimePicker } from "@mui/x-date-pickers";
+import {
+  DatePicker,
+  LocalizationProvider,
+  TimePicker,
+} from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import InputMask from "react-input-mask";
+import dayjs from "dayjs";
+import {
+  EventListProps,
+  EventProps,
+  EventService,
+} from "./../../../shared/services/api/EventService/EventService";
 
-const NewSchedule: React.FC = () => {
+const NewEvent: React.FC = () => {
   // edit
-  const [selected, setSelected] = useState<ScheduleProps>({
+  const [selected, setSelected] = useState<EventProps>({
     id: 0,
+    title: "",
     subject: "",
-    dayOfWeek: "",
-    start: "",
-    end: "",
+    date: "",
+    content: "",
   });
   const navigate = useNavigate();
   const params = useParams();
   const [typePage, setTypePage] = useState<"new" | "edit">("new");
   const [subjectList, setSubjectList] = useState<string[]>([]);
 
+  const euaFormatTransform = (date: string) => {
+    const [day, month, year] = date.split('/')
+    return `${year}-${month}-${day}`
+  }
+
   const validationSchema = Yup.object().shape({
+    title: Yup.string().required("O Título é brigatório."),
     subject: Yup.string().required("A Disciplina é Obrigatória."),
-    dayOfWeek: Yup.string().required("O dia da Semana é Obrigatório."),
-    start: Yup.string().required("O Horário de Início é Obrigatório."),
-    end: Yup.string().required("O Horário Final é Obrigatório."),
+    date: Yup.string().required("A data é Obrigatória."),
+    content: Yup.string().required("O Conteúdo é Obrigatório."),
   });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
+      title: "",
       subject: "",
-      dayOfWeek: "",
-      start: "",
-      end: "",
+      date: "",
+      content: "",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
       const payload = {
+        title: values.title,
         subject: values.subject,
-        dayOfWeek: values.dayOfWeek,
-        start: values.start,
-        end: values.end,
-      } as ScheduleProps;
-      console.log('teste')
+        date: dayjs(euaFormatTransform(values.date)).format(),
+        content: values.content,
+      } as EventProps;
 
       typePage === "edit" ? Object.assign(payload, { id: selected.id }) : null;
 
       if (typePage === "new") {
-        ScheduleService.create(payload)
+        EventService.create(payload)
           .then((data) => {
             if (data instanceof Error) {
               window.alert(data.message);
             }
-            navigate("/horarios");
+            navigate("/agenda");
           })
           .catch((error) => {
             console.log(error);
           });
       } else {
-        ScheduleService.updateById(selected.id, payload)
+        EventService.updateById(selected.id, payload)
           .then((data) => {
             if (data instanceof Error) {
               window.alert(data.message);
             }
-            navigate("/horarios");
+            navigate("/agenda");
           })
           .catch((error) => {
             console.log("error", error);
@@ -90,7 +101,7 @@ const NewSchedule: React.FC = () => {
   const { handleSubmit, touched, errors, setFieldValue } = formik;
 
   const callEdit = () => {
-    ScheduleService.getById(Number(params.id)).then((data) => {
+    EventService.getById(Number(params.id)).then((data) => {
       if (data instanceof Error) {
         window.alert("Houve um erro ao trazer o registro.");
       } else {
@@ -123,10 +134,10 @@ const NewSchedule: React.FC = () => {
 
   useEffect(() => {
     if (selected) {
+      formik.setFieldValue("title", selected.title);
       formik.setFieldValue("subject", selected.subject);
-      formik.setFieldValue("dayOfWeek", selected.dayOfWeek);
-      formik.setFieldValue("start", selected.start);
-      formik.setFieldValue("end", selected.end);
+      formik.setFieldValue("date", selected.date);
+      formik.setFieldValue("content", selected.content);
     }
   }, [selected]);
 
@@ -147,7 +158,7 @@ const NewSchedule: React.FC = () => {
           textOverflow="ellipsis"
           alignSelf="start"
         >
-          {typePage === "new" ? "Novo Horário" : "Editar Horário"}
+          {typePage === "new" ? "Novo Evento" : "Editar Evento"}
         </Typography>
         <Card
           sx={{
@@ -158,6 +169,29 @@ const NewSchedule: React.FC = () => {
           <FormikProvider value={formik}>
             <Form onSubmit={handleSubmit} autoComplete="off">
               <Stack direction="row" spacing={2}>
+              <Autocomplete
+                  {...formik.getFieldProps("title")}
+                  onChange={(event, value) =>
+                    formik.setFieldValue("title", value)
+                  }
+                  options={[
+                    "Prova",
+                    "Trabalho",
+                    "Seminário",
+                    "Apresentação",
+                    "Atividade",
+                  ]}
+                  fullWidth
+                  renderInput={(props) => (
+                    <TextField
+                      label="Tipo"
+                      {...props}
+                      onChange={formik.handleChange}
+                      error={Boolean(touched.title && errors.title)}
+                      helperText={touched.title && errors.title}
+                    />
+                  )}
+                />
                 <Autocomplete
                   {...formik.getFieldProps("subject")}
                   onChange={(event, value) => {
@@ -174,62 +208,22 @@ const NewSchedule: React.FC = () => {
                       helperText={touched.subject && errors.subject}
                     />
                   )}
-                />{" "}
-                <Autocomplete
-                  {...formik.getFieldProps("dayOfWeek")}
-                  onChange={(event, value) => {
-                    formik.setFieldValue("dayOfWeek", value);
-                  }}
-                  options={daysOfWeek}
-                  getOptionLabel={(option) => option}
-                  fullWidth
-                  renderInput={(props) => (
-                    <TextField
-                      label="Dia da Semana"
-                      {...props}
-                      error={Boolean(touched.dayOfWeek && errors.dayOfWeek)}
-                      helperText={touched.dayOfWeek && errors.dayOfWeek}
-                    />
-                  )}
                 />
-                <LocalizationProvider
-                  dateAdapter={AdapterDayjs}
-                  adapterLocale={"pt-br"}
-                  sx={{ width: 450 }}
-                >
-                  <TimePicker
-                    {...formik.getFieldProps("start")}
-                    openTo="hours"
-                    onChange={(value) => {
-                      setFieldValue("start", value);
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Início"
-                        fullWidth
-                        error={Boolean(touched.start && errors.start)}
-                        helperText={touched.start && errors.start}
-                      />
-                    )}
-                  />
-                  <TimePicker
-                    {...formik.getFieldProps("end")}
-                    openTo="hours"
-                    onChange={(value) => {
-                      setFieldValue("end", value);
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Fim"
-                        fullWidth
-                        error={Boolean(touched.end && errors.end)}
-                        helperText={touched.end && errors.end}
-                      />
-                    )}
-                  />
-                </LocalizationProvider>
+                <TextField
+                  {...formik.getFieldProps("content")}
+                  label="Conteúdo"
+                  error={Boolean(touched.content && errors.content)}
+                  helperText={touched.content && errors.content}
+                  fullWidth
+                />
+
+                <TextField
+                  {...formik.getFieldProps("date")}
+                  label="Data"
+                  fullWidth
+                  error={Boolean(touched.date && errors.date)}
+                  helperText={touched.date && errors.date}
+                />
               </Stack>
               <Box
                 display="flex"
@@ -257,4 +251,4 @@ const NewSchedule: React.FC = () => {
   );
 };
 
-export default NewSchedule;
+export default NewEvent;

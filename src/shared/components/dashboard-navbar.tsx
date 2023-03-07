@@ -9,7 +9,7 @@ import { UserCircle as UserCircleIcon } from '../icons/user-circle';
 import { Users as UsersIcon } from '../icons/users';
 // import { AccountPopover } from './account-popover';
 
-const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
+const DashboardNavbarRoot = styled(AppBar)(({ theme } : any) => ({
   backgroundColor: theme.palette.background.paper,
   boxShadow: theme.shadows[3]
 }));
@@ -93,8 +93,4 @@ export const DashboardNavbar = ({ onSidebarOpen, ...other}) => {
       /> */}
     </>
   );
-};
-
-DashboardNavbar.propTypes = {
-  onSidebarOpen: PropTypes.func
 };

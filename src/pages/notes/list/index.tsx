@@ -14,10 +14,14 @@ import {
 } from "@mui/material";
 import { LayoutBaseDePagina } from "../../../shared/layouts";
 import { useEffect, useState } from "react";
-import { NoteProps, NoteService } from "../../../shared/services/api/NoteService/NoteServiceService";
+import {
+  NoteProps,
+  NoteService,
+} from "../../../shared/services/api/NoteService/NoteServiceService";
 import { useNavigate } from "react-router-dom";
 import { Environment } from "../../../shared/environment";
 import { Box } from "@mui/material";
+import { Stack } from '@mui/system';
 
 export const NotesList = () => {
   const [rows, setRows] = useState<NoteProps[]>();
@@ -63,33 +67,27 @@ export const NotesList = () => {
           minWidth: 700,
         }}
       >
-        <Typography
-          variant="h3"
-          overflow="hidden"
-          whiteSpace="nowrap"
-          textOverflow="ellipsis"
-          alignSelf="start"
+        <Stack
+          direction="row"
+          sx={{ justifyContent: "space-between", alignItems: "center" }}
         >
-          Notas
-        </Typography>
-        <Card
-          sx={{
-            padding: 2,
-            mt: 4,
-          }}
-        >
-          <Box sx={{ display: "flex", justifyContent: "end" }}>
-            <Button
-              variant="contained"
-              onClick={() => navigate("/notas/nova")}
-            >
-              Nova Nota
-            </Button>
-          </Box>
+          <Typography
+            variant="h3"
+            overflow="hidden"
+            whiteSpace="nowrap"
+            textOverflow="ellipsis"
+            alignSelf="start"
+          >
+            Notas
+          </Typography>
+          <Button variant="contained" onClick={() => navigate("/notas/nova")}>
+            Nova Nota
+          </Button>
+        </Stack>
           <TableContainer
             component={Paper}
             variant="outlined"
-            sx={{ width: "auto", marginTop: 2 }}
+            sx={{ width: "auto", marginTop: 4, minHeight: '100px' }}
           >
             <Table>
               <TableHead>
@@ -128,7 +126,6 @@ export const NotesList = () => {
               </TableBody>
             </Table>
           </TableContainer>
-        </Card>
       </Box>
     </LayoutBaseDePagina>
   );

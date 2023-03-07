@@ -1360,6 +1360,23 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
+"@fullcalendar/core@^6.1.4":
+  version "6.1.4"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/core/-/core-6.1.4.tgz#bfc67bf4ad0c8d99a7e1258b24b5b241c6f48ed1"
+  integrity sha512-ZDD0Owv0LezAk14nsRNaOc9nbowItGmT0mnjOhEw+L6B8P5eads8yYaNA9itn70MWoOjiAG8xqD7Yk1iJGxqgQ==
+  dependencies:
+    preact "^10.0.5"
+
+"@fullcalendar/daygrid@^6.1.4":
+  version "6.1.4"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/daygrid/-/daygrid-6.1.4.tgz#fe1335eaa7a4e60ee4b0e6b3896b32398fac6c2c"
+  integrity sha512-X0QWEiA/hT8GYiQzmXt9DlZTWaQbNtBHBXGtaMNcVXbGHDCzLoWTHrde/jABGfr/i2+d9sLUO4oTtwz2HVpNtQ==
+
+"@fullcalendar/react@^6.1.4":
+  version "6.1.4"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/react/-/react-6.1.4.tgz#8113d1e05b1310be43e6eed1e9ffc9b1a52f373b"
+  integrity sha512-9nc0uHr7zfhNIMyaM+ftoVqX9UEn+frCjTeofN3lcl3bCYvo2dwLw+n9jBJx//f+NRrSwmIvKq2JrqmF2IrwJA==
+
 "@humanwhocodes/config-array@^0.11.6":
   version "0.11.6"
   resolved "https://registry.npmjs.org/@humanwhocodes/config-array/-/config-array-0.11.6.tgz"
@@ -2533,19 +2550,12 @@
     "@typescript-eslint/types" "5.41.0"
     eslint-visitor-keys "^3.3.0"
 
-"@unform/core@2.1.6", "@unform/core@^2.1.6":
+"@unform/core@^2.1.6":
   version "2.1.6"
   resolved "https://registry.yarnpkg.com/@unform/core/-/core-2.1.6.tgz#75df5fe813d4e94af46ad3570da068ff13d71b99"
   integrity sha512-coz9rOS1Y+0zygxTTQB+hY1HJ5ee0A40KBdIy/1IdaiFGT5LhZhCWqMorFh8KcqY3J+SInrpGDMmJYObsjEW9w==
   dependencies:
     dot-object "^2.1.4"
-
-"@unform/web@^2.1.6":
-  version "2.1.6"
-  resolved "https://registry.yarnpkg.com/@unform/web/-/web-2.1.6.tgz#8870c5f2f70828d246457cb155fdf825ad9bba03"
-  integrity sha512-EawnCaIYcF7UwbRmYn9k+KQBCkrH5nQjd5IGQL3rKZ7tSQNADenfuPUuBmRFE3mOBcIiIUgcYl0PMK5XFj5zFA==
-  dependencies:
-    "@unform/core" "2.1.6"
 
 "@webassemblyjs/ast@1.11.1":
   version "1.11.1"
@@ -7782,6 +7792,11 @@ postcss@^8.3.5, postcss@^8.4.17, postcss@^8.4.4, postcss@^8.4.7:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
+preact@^10.0.5:
+  version "10.12.1"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-10.12.1.tgz#8f9cb5442f560e532729b7d23d42fd1161354a21"
+  integrity sha512-l8386ixSsBdbreOAkqtrwqHwdvR35ID8c3rKPa8lCWuO86dBi32QWHV4vfsZK1utLLFMvw+Z5Ad4XLkZzchscg==
+
 prelude-ls@^1.2.1:
   version "1.2.1"
   resolved "https://registry.npmjs.org/prelude-ls/-/prelude-ls-1.2.1.tgz"
@@ -8006,13 +8021,14 @@ react-fast-compare@^2.0.1:
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
   integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
 
-react-input-mask@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/react-input-mask/-/react-input-mask-2.0.4.tgz#9ade5cf8196f4a856dbf010820fe75a795f3eb14"
-  integrity sha512-1hwzMr/aO9tXfiroiVCx5EtKohKwLk/NT8QlJXHQ4N+yJJFyUuMT+zfTpLBwX/lK3PkuMlievIffncpMZ3HGRQ==
+react-input-mask@^3.0.0-alpha.2:
+  version "3.0.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/react-input-mask/-/react-input-mask-3.0.0-alpha.2.tgz#113102942a557edc7a192e66020b8ce1ba699a5c"
+  integrity sha512-9U7qL+mvDMOJcbOFPdt6Vj+zzmCMNnBjhhjGDrL8BGQmymgvMVKhu/oOVfAkl+5VWOsLr+G3EhZOmae5fBcAkA==
   dependencies:
     invariant "^2.2.4"
-    warning "^4.0.2"
+    prop-types "^15.7.2"
+    warning "^4.0.3"
 
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
@@ -9363,7 +9379,7 @@ walker@^1.0.7:
   dependencies:
     makeerror "1.0.12"
 
-warning@^4.0.2:
+warning@^4.0.3:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/warning/-/warning-4.0.3.tgz#16e9e077eb8a86d6af7d64aa1e05fd85b4678ca3"
   integrity sha512-rpJyN222KWIvHJ/F53XSZv0Zl/accqHR8et1kpaMTD/fLCRxtV8iX8czMzY7sVZupTI3zcUTg8eycS2kNF9l6w==

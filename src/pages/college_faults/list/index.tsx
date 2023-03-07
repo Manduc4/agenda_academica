@@ -21,6 +21,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Environment } from "../../../shared/environment";
 import { Box } from "@mui/material";
+import { Stack } from '@mui/system';
 
 export const CollegeFaultList = () => {
   const [rows, setRows] = useState<CollegeFaultProps[]>();
@@ -66,67 +67,61 @@ export const CollegeFaultList = () => {
           minWidth: 700,
         }}
       >
-        <Typography
-          variant="h3"
-          overflow="hidden"
-          whiteSpace="nowrap"
-          textOverflow="ellipsis"
-          alignSelf="start"
-        >
-          Faltas
-        </Typography>
-        <Card
-          sx={{
-            padding: 2,
-            mt: 4,
-          }}
-        >
-          <Box sx={{ display: "flex", justifyContent: "end" }}>
-            <Button variant="contained" onClick={() => navigate("/faltas/nova")}>
-              Adicionar Faltas
-            </Button>
-          </Box>
-          <TableContainer
-            component={Paper}
-            variant="outlined"
-            sx={{ width: "auto", marginTop: 2 }}
+        <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center'}}>
+          <Typography
+            variant="h3"
+            overflow="hidden"
+            whiteSpace="nowrap"
+            textOverflow="ellipsis"
+            alignSelf="start"
           >
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Disciplina</TableCell>
-                  <TableCell>Quantidade</TableCell>
-                  <TableCell>Máximo de Faltas</TableCell>
-                  <TableCell>Ações</TableCell>
+            Faltas
+          </Typography>
+          <Button variant="contained" onClick={() => navigate("/faltas/nova")}>
+            Adicionar Faltas
+          </Button>
+        </Stack>
+        <Box sx={{ display: "flex", justifyContent: "end" }}></Box>
+        <TableContainer
+          component={Paper}
+          variant="outlined"
+          sx={{ width: "auto", marginTop: 4, minHeight: '100px' }}
+        >
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Disciplina</TableCell>
+                <TableCell>Quantidade</TableCell>
+                <TableCell>Máximo de Faltas</TableCell>
+                <TableCell>Ações</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows?.map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell>{row.subject}</TableCell>
+                  <TableCell>{row.quantity}</TableCell>
+                  <TableCell>{row.maxCollegeFaults}</TableCell>
+                  <TableCell sx={{ padding: 1 }}>
+                    <IconButton
+                      size="small"
+                      onClick={() => handleDelete(row.id)}
+                    >
+                      <Icon>delete</Icon>
+                    </IconButton>
+                    <IconButton
+                      size="small"
+                      sx={{ padding: 1 }}
+                      onClick={() => navigate(`/faltas/${row.id}`)}
+                    >
+                      <Icon>edit</Icon>
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows?.map((row) => (
-                  <TableRow key={row.id}>
-                    <TableCell>{row.subject}</TableCell>
-                    <TableCell>{row.quantity}</TableCell>
-                    <TableCell>{row.maxCollegeFaults}</TableCell>
-                    <TableCell sx={{ padding: 1 }}>
-                      <IconButton
-                        size="small"
-                        onClick={() => handleDelete(row.id)}
-                      >
-                        <Icon>delete</Icon>
-                      </IconButton>
-                      <IconButton
-                        size="small"
-                        sx={{ padding: 1 }}
-                        onClick={() => navigate(`/faltas/${row.id}`)}
-                      >
-                        <Icon>edit</Icon>
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Card>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Box>
     </LayoutBaseDePagina>
   );

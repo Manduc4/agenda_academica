@@ -1,4 +1,5 @@
-import { useRoutes } from "react-router-dom";
+import { useEffect } from "react";
+import { useRoutes, useNavigate } from "react-router-dom";
 import { SubjectList } from "../pages/subjects/list";
 import NewSubject from "../pages/subjects/new";
 import NewNote from "../pages/notes/new";
@@ -8,17 +9,17 @@ import NewCollegeFault from "../pages/college_faults/new";
 import { ScheduleList } from "../pages/schedules/list";
 import NewSchedule from "../pages/schedules/new";
 import { Calendar } from "../pages/calendar/list";
-import { DashboardLayout } from './../shared/components/dashboard-layout';
 import Account from "../pages/account";
+import Settings from "../pages/settings";
+import NewEvent from "../pages/calendar/new";
 
 const AppRoutes = () => {
   return useRoutes([
     {
       path: "/",
-      element: <DashboardLayout />,
       children: [
         {
-          path: "disciplinas",
+          path: "/disciplinas",
           element: <SubjectList />,
         },
         {
@@ -30,72 +31,64 @@ const AppRoutes = () => {
           element: <NewSubject />,
         },
         {
-          path: "/notas",
-          element: <NotesList />
+          path: "notas",
+          element: <NotesList />,
         },
         {
-          path: "notas/nova", 
-          element: <NewNote />
+          path: "notas/nova",
+          element: <NewNote />,
         },
         {
           path: "notas/:id",
-          element: <NewNote />
-        }, 
+          element: <NewNote />,
+        },
         {
           path: "faltas",
-          element: <CollegeFaultList />
+          element: <CollegeFaultList />,
         },
         {
           path: "faltas/nova",
-          element: <NewCollegeFault />
+          element: <NewCollegeFault />,
         },
         {
           path: "faltas/:id",
-          element: <NewCollegeFault />
+          element: <NewCollegeFault />,
         },
         {
           path: "horarios",
-          element: <ScheduleList />
+          element: <ScheduleList />,
         },
         {
           path: "horarios/novo",
-          element: <NewSchedule />
+          element: <NewSchedule />,
         },
         {
           path: "horarios/:id",
-          element: <NewSchedule />
+          element: <NewSchedule />,
         },
         {
-          path: "agenda", 
-          element: <Calendar />
+          path: "agenda",
+          element: <Calendar />,
+        },
+        {
+          path: "agenda/novo",
+          element: <NewEvent />,
+        },
+        {
+          path: "agenda/:id",
+          element: <NewEvent />,
         },
         {
           path: "conta",
-          element: <Account />
-        }
+          element: <Account />,
+        },
+        {
+          path: "configuracoes",
+          element: <Settings />,
+        },
       ],
     },
   ]);
-  // return (
-  //   <Routes>
-  //     <Route path="/pagina-inicial" element={<Dashboard />} />
-  //     <Route path="/disciplinas" element={<SubjectList />} />
-  //     <Route path="/disciplinas/nova" element={<NewSubject />} />
-  //     <Route path="/disciplinas/:id" element={<NewSubject />} />
-  //     <Route path="/notas" element={<NotesList />} />
-  //     <Route path="/notas/nova" element={<NewNote />} />
-  //     <Route path="/notas/:id" element={<NewNote />} />
-  //     <Route path="/faltas" element={<CollegeFaultList />} />
-  //     <Route path="/faltas/nova" element={<NewCollegeFault />} />
-  //     <Route path="/faltas/:id" element={<NewCollegeFault />} />
-  //     <Route path="/horarios" element={<ScheduleList />} />
-  //     <Route path="/horarios/novo" element={<NewSchedule />} />
-  //     <Route path="/horarios/:id" element={<NewSchedule />} />
-  //     <Route path="/agenda" element={<Calendar />} />
-  //     <Route path="/configuracoes" element={<Dashboard />} />
-  //     {/* <Route path="*" element={<Navigate to="pagina-inicial" />} /> */}
-  //   </Routes>
-  // );
 };
 
 export default AppRoutes;

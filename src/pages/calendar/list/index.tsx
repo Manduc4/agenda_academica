@@ -1,99 +1,36 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  Card,
-  Icon,
-  Popover,
-  TextField,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Box, Button, Card, Icon, Typography } from "@mui/material";
 import { LayoutBaseDePagina } from "../../../shared/layouts";
 import { Stack } from "@mui/system";
 import { useNavigate } from "react-router-dom";
-import { daysOfWeek } from "../../../shared/utils/dateAndTime";
+import { ScheduleService } from "../../../shared/services/api/ScheduleService/ScheduleService";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import ptBrLocale from "@fullcalendar/core/locales/pt-br";
 import {
-  ScheduleProps,
-  ScheduleService,
-} from "../../../shared/services/api/ScheduleService/ScheduleService";
+  EventService,
+  EventProps,
+  EventListProps,
+} from "./../../../shared/services/api/EventService/EventService";
 import dayjs from "dayjs";
-import { useAppThemeContext } from "../../../shared/contexts";
-import Month from "../components/Month";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+
+interface CalendarEvent {
+  id: string;
+  title: string;
+  // startStr: string;
+  // description: string;
+  // end: string;
+  start: string;
+}
 
 export const Calendar: React.FC = () => {
   const navigate = useNavigate();
-  const { themeName } = useAppThemeContext();
-  const theme = useTheme();
-  const [month, setMonth] = useState([]);
-  const [day, setDay] = useState(dayjs());
-  const [value, setValue] = useState(dayjs());
-
-  const [rows, setRows] = useState<ScheduleProps[]>();
-  const style = {
-    mainBackground: theme.palette.primary.main,
-    mainColor: theme.palette.getContrastText(theme.palette.primary.main),
-    eventBackground:
-      themeName === "dark" ? theme.palette.background.paper : "#ccc",
-    eventColor:
-      themeName === "dark"
-        ? theme.palette.getContrastText(theme.palette.background.paper)
-        : "#",
-    dayBottomBorder: `${theme.spacing(0.2)} solid ${
-      theme.palette.secondary.contrastText
-    }`,
-  };
-
-  const startDay = day.clone().startOf("month");
-  const endDay = day.clone().endOf("month");
-
-  const getMonthDays = () => {
-    const restOfLastMonth = Array(startDay.day())
-      .fill(0)
-      .map((_, index) => {
-        return startDay.clone().subtract(index + 1, "day");
-      });
-    restOfLastMonth.reverse();
-
-    const initOfNextMonth = Array(6 - endDay.day())
-      .fill(0)
-      .map((_, index) => {
-        return endDay.clone().add(index + 1, "day");
-      });
-
-    const currentMonthDays = Array(day.daysInMonth())
-      .fill(0)
-      .map((value, index) => day.clone().add(index, "day"));
-
-    const allDays = [
-      ...restOfLastMonth,
-      ...currentMonthDays,
-      ...initOfNextMonth,
-    ];
-
-    return allDays;
-  };
-
-  const getMonth = () => {
-    const daysInMonth = getMonthDays();
-
-    const month = Array(daysOfWeek.length)
-      .fill(0)
-      .map((_, dayOfWeekIndex) => {
-        const monthColumn = daysInMonth.filter((day) => {
-          return day.day() === dayOfWeekIndex;
-        });
-        return monthColumn;
-      });
-
-    return month;
-  };
+  const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>([]);
+  const [eventList, setEventList] = useState<EventProps[]>([]);
 
   const handleDelete = (id: number) => {
     if (window.confirm("Deseja mesmo Apagar o registro?")) {
-      ScheduleService.deleteById(id)
+      EventService.deleteById(id)
         .then((data) => {
           if (data instanceof Error) {
             console.log("error", data.message);
@@ -107,12 +44,12 @@ export const Calendar: React.FC = () => {
   };
 
   useEffect(() => {
-    ScheduleService.getAll()
+    EventService.getAll()
       .then((data) => {
         if (data instanceof Error) {
           window.alert(data.message);
         } else {
-          setRows(data.data);
+          setEventList(data.data);
         }
       })
       .catch((error) => {
@@ -121,8 +58,19 @@ export const Calendar: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    setMonth(getMonth());
-  }, [value]);
+    const events = eventList.map((event) => {
+      const { id, date, title } = event;
+      return {
+        id: String(id),
+        start: date,
+        title: title,
+        // startStr: date,
+        // end: date,
+        // description: 'Descrição'
+      };
+    });
+    setCalendarEvents(events);
+  }, [eventList]);
 
   return (
     <LayoutBaseDePagina>
@@ -148,26 +96,24 @@ export const Calendar: React.FC = () => {
           >
             Agenda
           </Typography>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              mask="____/__/__"
-              value={value.format("dd/mm/yyyy")}
-              onChange={(newValue) => {
-                // setValue(newValue);
-                setDay(dayjs(newValue));
-              }}
-              renderInput={(params) => <TextField {...params} />}
-            />
-          </LocalizationProvider>
 
-          <Box sx={{ marginTop: 2, width: 100 }}>
+          <Box sx={{ marginTop: 2 }}>
             <Button
               variant="contained"
               size="medium"
-              sx={{ width: "100%" }}
-              onClick={() => navigate("/horarios/novo")}
+              sx={{ width: "100%", display: "flex", flexDirection: "row" }}
+              onClick={() => navigate("/agenda/novo")}
             >
               <Icon>add_circle_outline</Icon>
+              <Typography
+                overflow="hidden"
+                whiteSpace="nowrap"
+                textOverflow="ellipsis"
+                alignSelf="start"
+                marginTop={0}
+              >
+                Novo Evento
+              </Typography>
             </Button>
           </Box>
         </Stack>
@@ -181,10 +127,17 @@ export const Calendar: React.FC = () => {
             padding: 2,
             display: "flex",
             flexDirection: "column",
-            border: style.dayBottomBorder,
           }}
         >
-          <Month month={month} />
+          <FullCalendar
+            plugins={[dayGridPlugin]}
+            initialView="dayGridMonth"
+            locale={ptBrLocale}
+            events={[...calendarEvents]}
+            height="auto"
+            defaultAllDay
+            // select
+          />
         </Card>
       </Box>
     </LayoutBaseDePagina>

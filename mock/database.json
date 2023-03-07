@@ -75,5 +75,13 @@
       "id": 4
     }
   ],
-  "event": []
+  "event": [
+    {
+      "title": "Prova",
+      "subject": "Cálculo II",
+      "date": "2023-02-24T00:00:00-04:00",
+      "content": "asdf",
+      "id": 1
+    }
+  ]
 }

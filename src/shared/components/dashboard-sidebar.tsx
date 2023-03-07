@@ -25,54 +25,9 @@ import { useNavigate } from "react-router-dom";
 
 const navItems = [
   {
-    path: "/",
-    icon: <ChartBarIcon fontSize="small" />,
-    label: "Dashboard",
-  },
-  {
-    path: "/customers",
-    icon: <UsersIcon fontSize="small" />,
-    label: "Customers",
-  },
-  {
-    path: "/products",
-    icon: <ShoppingBagIcon fontSize="small" />,
-    label: "Products",
-  },
-  {
-    path: "/account",
-    icon: <UserIcon fontSize="small" />,
-    label: "Account",
-  },
-  {
-    path: "/settings",
-    icon: <CogIcon fontSize="small" />,
-    label: "Settings",
-  },
-  {
-    path: "/login",
-    icon: <LockIcon fontSize="small" />,
-    label: "Login",
-  },
-  {
-    path: "/register",
-    icon: <UserAddIcon fontSize="small" />,
-    label: "Register",
-  },
-  {
-    path: "/404",
-    icon: <XCircleIcon fontSize="small" />,
-    label: "Error",
-  },
-  {
-    label: "Página Inicial",
-    icon: "home",
     path: "/pagina-inicial",
-  },
-  {
-    label: "Disciplinas",
-    icon: "menu_book",
-    path: "/disciplinas",
+    icon: <ChartBarIcon fontSize="small" />,
+    label: "Página Inicial",
   },
   {
     label: "Agenda",
@@ -85,6 +40,11 @@ const navItems = [
     path: "/horarios",
   },
   {
+    label: "Disciplinas",
+    icon: "menu_book",
+    path: "/disciplinas",
+  },
+  {
     label: "Notas",
     icon: "workspace_premium",
     path: "/notas",
@@ -95,10 +55,50 @@ const navItems = [
     path: "/faltas",
   },
   {
+    path: "/conta",
+    icon: <UserIcon fontSize="small" />,
+    label: "Conta",
+  },
+  {
     label: "Configurações",
     icon: "settings",
     path: "/configuracoes",
   }
+  // {
+  //   path: "/login",
+  //   icon: <LockIcon fontSize="small" />,
+  //   label: "Login",
+  // },
+  // {
+  //   path: "/register",
+  //   icon: <UserAddIcon fontSize="small" />,
+  //   label: "Register",
+  // },
+  // {
+    //   path: "/settings",
+    //   icon: <CogIcon fontSize="small" />,
+    //   label: "Settings",
+    // },
+    // {
+    //   path: "/customers",
+    //   icon: <UsersIcon fontSize="small" />,
+    //   label: "Customers",
+    // },
+    // {
+    //   path: "/products",
+    //   icon: <ShoppingBagIcon fontSize="small" />,
+    //   label: "Products",
+    // },
+  // {
+  //   path: "/404",
+  //   icon: <XCircleIcon fontSize="small" />,
+  //   label: "Error",
+  // },
+  // {
+  //   label: "Página Inicial",
+  //   icon: "home",
+  //   path: "/pagina-inicial",
+  // },
 ];
 
 
