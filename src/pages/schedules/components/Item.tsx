@@ -74,8 +74,9 @@ const Item: React.FC<Item> = ({ row }) => {
         maxWidth: 150,
         borderRadius: 2,
         width: "100%",
+        height: "100%",
         boxSizing: "border-box",
-        backgroundColor: style.eventBackground,
+        backgroundColor: "#5048E5",
       }}
     >
       <Menu
@@ -122,6 +123,7 @@ const Item: React.FC<Item> = ({ row }) => {
           flexDirection: "column",
           textTransform: "none",
           width: "100%",
+          height: "100%",
           color: style.eventColor,
         }}
       >
