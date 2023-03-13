@@ -21,7 +21,9 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Environment } from "../../../shared/environment";
 import { Box } from "@mui/material";
-import { Stack } from '@mui/system';
+import { Stack } from "@mui/system";
+import { Api } from "../../../shared/services/api/axios-config";
+import { getDatabase, ref, onValue } from "firebase/database";
 
 export const NotesList = () => {
   const [rows, setRows] = useState<NoteProps[]>();
@@ -84,48 +86,48 @@ export const NotesList = () => {
             Nova Nota
           </Button>
         </Stack>
-          <TableContainer
-            component={Paper}
-            variant="outlined"
-            sx={{ width: "auto", marginTop: 4, minHeight: '100px' }}
-          >
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Tipo</TableCell>
-                  <TableCell>Nota</TableCell>
-                  <TableCell>Nota Máxima</TableCell>
-                  <TableCell>Disciplina</TableCell>
-                  <TableCell>Ações</TableCell>
+        <TableContainer
+          component={Paper}
+          variant="outlined"
+          sx={{ width: "auto", marginTop: 4, minHeight: "100px" }}
+        >
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Tipo</TableCell>
+                <TableCell>Nota</TableCell>
+                <TableCell>Nota Máxima</TableCell>
+                <TableCell>Disciplina</TableCell>
+                <TableCell>Ações</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows?.map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell>{row.title}</TableCell>
+                  <TableCell>{row.value}</TableCell>
+                  <TableCell>{row.maxValue}</TableCell>
+                  <TableCell>{row.subject}</TableCell>
+                  <TableCell sx={{ padding: 1 }}>
+                    <IconButton
+                      size="small"
+                      onClick={() => handleDelete(row.id)}
+                    >
+                      <Icon>delete</Icon>
+                    </IconButton>
+                    <IconButton
+                      size="small"
+                      sx={{ padding: 1 }}
+                      onClick={() => navigate(`/disciplinas/${row.id}`)}
+                    >
+                      <Icon>edit</Icon>
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows?.map((row) => (
-                  <TableRow key={row.id}>
-                    <TableCell>{row.title}</TableCell>
-                    <TableCell>{row.value}</TableCell>
-                    <TableCell>{row.maxValue}</TableCell>
-                    <TableCell>{row.subject}</TableCell>
-                    <TableCell sx={{ padding: 1 }}>
-                      <IconButton
-                        size="small"
-                        onClick={() => handleDelete(row.id)}
-                      >
-                        <Icon>delete</Icon>
-                      </IconButton>
-                      <IconButton
-                        size="small"
-                        sx={{ padding: 1 }}
-                        onClick={() => navigate(`/disciplinas/${row.id}`)}
-                      >
-                        <Icon>edit</Icon>
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Box>
     </LayoutBaseDePagina>
   );

@@ -19,6 +19,7 @@ import {
 import dayjs from "dayjs";
 import { useAppThemeContext } from "../../../shared/contexts";
 import Item from "../components/Item";
+import axios from "axios";
 
 export const ScheduleList: React.FC = () => {
   const [rows, setRows] = useState<ScheduleProps[]>();
@@ -34,9 +35,9 @@ export const ScheduleList: React.FC = () => {
       themeName === "dark"
         ? theme.palette.getContrastText(theme.palette.background.paper)
         : "#",
-    dayBottomBorder: `${theme.spacing(
-      0.2
-    )} solid ${theme.palette.secondary.contrastText}`,
+    dayBottomBorder: `${theme.spacing(0.2)} solid ${
+      theme.palette.secondary.contrastText
+    }`,
   };
 
   const handleDelete = (id: number) => {
@@ -55,16 +56,26 @@ export const ScheduleList: React.FC = () => {
   };
 
   useEffect(() => {
-    ScheduleService.getAll()
-      .then((data) => {
-        if (data instanceof Error) {
-          window.alert(data.message);
-        } else {
-          setRows(data.data);
-        }
+    // ScheduleService.getAll()
+    //   .then((data) => {
+    //     if (data instanceof Error) {
+    //       window.alert(data.message);
+    //     } else {
+    //       setRows(data.data);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log("error", error);
+    //   });
+    axios
+      .get(
+        "https://agenda-acad-default-rtdb.firebaseio.com/"
+      )
+      .then(({ data }) => {
+        console.log(data);
       })
       .catch((error) => {
-        console.log("error", error);
+        console.log(error);
       });
   }, []);
 
@@ -109,7 +120,7 @@ export const ScheduleList: React.FC = () => {
             padding: 2,
             display: "flex",
             flexDirection: "row",
-            border: style.dayBottomBorder
+            border: style.dayBottomBorder,
           }}
         >
           {daysOfWeek.map((day, index) => {
@@ -154,7 +165,7 @@ export const ScheduleList: React.FC = () => {
                     const { dayOfWeek } = row;
 
                     if (dayOfWeek === day) {
-                      return <Item key={index} row={row}/>;
+                      return <Item key={index} row={row} />;
                     }
                   })}
                 </Box>

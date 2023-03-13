@@ -14,5 +14,5 @@ export const Environment = {
   /**
    * Url base  de consulta dos dados dessa aplicação
    */
-  URL_BASE: 'https://agenda-acad-default-rtdb.firebaseio.com'
+  URL_BASE: 'https://agenda-academica-api.up.railway.app/'
 }

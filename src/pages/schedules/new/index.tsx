@@ -57,7 +57,7 @@ const NewSchedule: React.FC = () => {
         start: values.start,
         end: values.end,
       } as ScheduleProps;
-      console.log('teste')
+      console.log("teste");
 
       typePage === "edit" ? Object.assign(payload, { id: selected.id }) : null;
 
@@ -128,6 +128,7 @@ const NewSchedule: React.FC = () => {
       formik.setFieldValue("start", selected.start);
       formik.setFieldValue("end", selected.end);
     }
+
   }, [selected]);
 
   return (

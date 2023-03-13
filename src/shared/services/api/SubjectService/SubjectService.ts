@@ -15,7 +15,7 @@ export type SubjectListProps = {
 
 const getAll = async (): Promise<SubjectListProps | Error> => {
   try {
-    const urlRelativa = `/subject`
+    const urlRelativa = `/subjects`
 
     const { data, headers } = await Api.get(urlRelativa);
 
@@ -36,7 +36,7 @@ const getAll = async (): Promise<SubjectListProps | Error> => {
 
 const getById = async (id: number): Promise<SubjectProps | Error> => {
   try {
-    const { data } = await Api.get(`/subject/${id}`)
+    const { data } = await Api.get(`/subjects/${id}`)
 
     if(data) {
       return data;
@@ -52,7 +52,7 @@ const getById = async (id: number): Promise<SubjectProps | Error> => {
 
 const create = async (payload: Omit<SubjectProps, 'id'>): Promise<number | Error> => {
   try {
-    const { data } = await Api.post<SubjectProps>('/subject', payload);
+    const { data } = await Api.post<SubjectProps>('/subjects', payload);
 
     if(data) {
       return data.id
@@ -67,7 +67,7 @@ const create = async (payload: Omit<SubjectProps, 'id'>): Promise<number | Error
 
 const updateById = async (id: number, payload: SubjectProps): Promise<void | Error> => {
   try {
-    const { data } = await Api.put(`/subject/${id}`, payload);
+    const { data } = await Api.put(`/subjects/${id}`, payload);
 
   } catch (error) {
     console.error(error);
@@ -77,7 +77,7 @@ const updateById = async (id: number, payload: SubjectProps): Promise<void | Err
 
 const deleteById = async (id: number): Promise<void | Error> => {
   try {
-    const { data } = await Api.delete(`/subject/${id}`)
+    const { data } = await Api.delete(`/subjects/${id}`)
 
   } catch (error) {
     console.error(error);
