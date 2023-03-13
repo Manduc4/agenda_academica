@@ -4,6 +4,9 @@ import { errorInterceptor, responseInterceptor } from "./interceptors";
 
 const Api = axios.create({
   baseURL: Environment.URL_BASE,
+  headers: {
+    'Access-Control-Allow-Origin': '*',
+  },
 });
 
 Api.interceptors.response.use(
