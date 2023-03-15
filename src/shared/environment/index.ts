@@ -14,5 +14,5 @@ export const Environment = {
   /**
    * Url base  de consulta dos dados dessa aplicação
    */
-  URL_BASE: 'https://agenda-academica-api.up.railway.app/'
+  URL_BASE: 'https://agenda-academica-api.up.railway.app'
 }

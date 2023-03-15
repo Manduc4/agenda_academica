@@ -13,6 +13,7 @@ import {
   EventListProps,
 } from "./../../../shared/services/api/EventService/EventService";
 import dayjs from "dayjs";
+import { useSnackbar } from "notistack";
 
 interface CalendarEvent {
   id: string;
@@ -27,6 +28,7 @@ export const Calendar: React.FC = () => {
   const navigate = useNavigate();
   const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>([]);
   const [eventList, setEventList] = useState<EventProps[]>([]);
+  const { enqueueSnackbar } = useSnackbar()
 
   const handleDelete = (id: number) => {
     if (window.confirm("Deseja mesmo Apagar o registro?")) {
@@ -47,7 +49,9 @@ export const Calendar: React.FC = () => {
     EventService.getAll()
       .then((data) => {
         if (data instanceof Error) {
-          window.alert(data.message);
+          enqueueSnackbar(data.message, {
+            variant: 'error'
+          })
         } else {
           setEventList(data.data);
         }

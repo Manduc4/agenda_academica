@@ -25,11 +25,13 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Environment } from "../../../shared/environment";
 import { Box } from "@mui/system";
+import { useSnackbar } from "notistack";
 
 export const SubjectList = () => {
   const [rows, setRows] = useState<SubjectProps[]>();
   const [isLoading, setIsLoading] = useState(0);
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleDelete = (id: number) => {
     if (window.confirm("Deseja mesmo Apagar o registro?")) {
@@ -50,7 +52,9 @@ export const SubjectList = () => {
     SubjectService.getAll()
       .then((data) => {
         if (data instanceof Error) {
-          window.alert(data.message);
+          enqueueSnackbar(data.message, {
+            variant: 'error'
+          })
         } else {
           setRows(data.data);
         }

@@ -21,12 +21,14 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Environment } from "../../../shared/environment";
 import { Box } from "@mui/material";
-import { Stack } from '@mui/system';
+import { Stack } from "@mui/system";
+import { useSnackbar } from "notistack";
 
 export const CollegeFaultList = () => {
   const [rows, setRows] = useState<CollegeFaultProps[]>();
   const [isLoading, setIsLoading] = useState(0);
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleDelete = (id: number) => {
     if (window.confirm("Deseja mesmo Apagar o registro?")) {
@@ -47,7 +49,9 @@ export const CollegeFaultList = () => {
     CollegeFaultService.getAll()
       .then((data) => {
         if (data instanceof Error) {
-          window.alert(data.message);
+          enqueueSnackbar(data.message, {
+            variant: "error",
+          });
         } else {
           setRows(data.data);
         }
@@ -67,7 +71,10 @@ export const CollegeFaultList = () => {
           minWidth: 700,
         }}
       >
-        <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center'}}>
+        <Stack
+          direction="row"
+          sx={{ justifyContent: "space-between", alignItems: "center" }}
+        >
           <Typography
             variant="h3"
             overflow="hidden"
@@ -85,7 +92,7 @@ export const CollegeFaultList = () => {
         <TableContainer
           component={Paper}
           variant="outlined"
-          sx={{ width: "auto", marginTop: 4, minHeight: '100px' }}
+          sx={{ width: "auto", marginTop: 4, minHeight: "100px" }}
         >
           <Table>
             <TableHead>

@@ -20,6 +20,7 @@ import dayjs from "dayjs";
 import { useAppThemeContext } from "../../../shared/contexts";
 import Item from "../components/Item";
 import axios from "axios";
+import { useSnackbar } from "notistack";
 
 export const ScheduleList: React.FC = () => {
   const [rows, setRows] = useState<ScheduleProps[]>();
@@ -39,6 +40,7 @@ export const ScheduleList: React.FC = () => {
       theme.palette.secondary.contrastText
     }`,
   };
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleDelete = (id: number) => {
     if (window.confirm("Deseja mesmo Apagar o registro?")) {
@@ -56,27 +58,29 @@ export const ScheduleList: React.FC = () => {
   };
 
   useEffect(() => {
-    // ScheduleService.getAll()
-    //   .then((data) => {
-    //     if (data instanceof Error) {
-    //       window.alert(data.message);
-    //     } else {
-    //       setRows(data.data);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log("error", error);
-    //   });
-    axios
-      .get(
-        "https://agenda-acad-default-rtdb.firebaseio.com/"
-      )
-      .then(({ data }) => {
-        console.log(data);
+    ScheduleService.getAll()
+      .then((data) => {
+        if (data instanceof Error) {
+          enqueueSnackbar(data.message, {
+            variant: "error",
+          });
+        } else {
+          setRows(data.data);
+        }
       })
       .catch((error) => {
-        console.log(error);
+        console.log("error", error);
       });
+    // axios
+    //   .get(
+    //     "https://agenda-acad-default-rtdb.firebaseio.com/"
+    //   )
+    //   .then(({ data }) => {
+    //     console.log(data);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
   }, []);
 
   return (

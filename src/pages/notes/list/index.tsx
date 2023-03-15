@@ -24,11 +24,13 @@ import { Box } from "@mui/material";
 import { Stack } from "@mui/system";
 import { Api } from "../../../shared/services/api/axios-config";
 import { getDatabase, ref, onValue } from "firebase/database";
+import { useSnackbar } from "notistack";
 
 export const NotesList = () => {
   const [rows, setRows] = useState<NoteProps[]>();
   const [isLoading, setIsLoading] = useState(0);
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleDelete = (id: number) => {
     if (window.confirm("Deseja mesmo Apagar o registro?")) {
@@ -49,7 +51,9 @@ export const NotesList = () => {
     NoteService.getAll()
       .then((data) => {
         if (data instanceof Error) {
-          window.alert(data.message);
+          enqueueSnackbar(data.message, {
+            variant: "error",
+          });
         } else {
           setRows(data.data);
         }
