@@ -11,7 +11,7 @@ export const App = () => {
   return (
     <AppThemeProvider>
       <DrawerProvider>
-        <HashRouter basename="/">
+        <HashRouter basename="/#">
           <DashboardLayout>
             <AppRoutes />
           </DashboardLayout>

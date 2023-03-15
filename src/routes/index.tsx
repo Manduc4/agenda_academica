@@ -16,7 +16,7 @@ import NewEvent from "../pages/calendar/new";
 const AppRoutes = () => {
   return useRoutes([
     {
-      path: "/",
+      path: "/#",
       children: [
         {
           path: "/disciplinas",
