@@ -6,7 +6,7 @@ import { Box, Stack } from "@mui/system";
 import {
   SubjectProps,
   SubjectService,
-} from "../../../shared/services/api/SubjectService/SubjectService";
+} from "../../../shared/services/SubjectService/SubjectService";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -103,6 +103,7 @@ const NewSubject: React.FC = () => {
       setTypePage("edit");
       callEdit();
     }
+    console.log(params.id)
   }, []);
 
   useEffect(() => {

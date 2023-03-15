@@ -13,13 +13,13 @@ import { Box, Stack } from "@mui/system";
 import {
   NoteProps,
   NoteService,
-} from "../../../shared/services/api/NoteService/NoteServiceService";
+} from "../../../shared/services/NoteService/NoteServiceService";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   SubjectProps,
   SubjectService,
-} from "../../../shared/services/api/SubjectService/SubjectService";
+} from "../../../shared/services/SubjectService/SubjectService";
 
 const NewNote: React.FC = () => {
   // edit

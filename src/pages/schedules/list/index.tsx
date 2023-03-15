@@ -15,7 +15,7 @@ import { daysOfWeek } from "../../../shared/utils/dateAndTime";
 import {
   ScheduleProps,
   ScheduleService,
-} from "../../../shared/services/api/ScheduleService/ScheduleService";
+} from "../../../shared/services/ScheduleService/ScheduleService";
 import dayjs from "dayjs";
 import { useAppThemeContext } from "../../../shared/contexts";
 import Item from "../components/Item";

@@ -1,22 +1,22 @@
-import { Api } from "../axios-config";
+import { Api } from "../api/axios-config";
+import endpoints from "../api/endpoints";
 
-type dayOfWeek = 'segunda'|'terca'|'quarta'|'quinta'|'sexta'|'sabado'|'domingo'
-
-export interface ScheduleProps {
+export interface EventProps {
   id: number;
+  title: string;
   subject: string;
-  dayOfWeek: dayOfWeek| '';
-  start: string;
-  end: string;
+  date: string;
+  content: string;
 }
 
-export type ScheduleListProps = {
-  data: ScheduleProps[];
+export type EventListProps = {
+  data: EventProps[];
 }
 
-const getAll = async (): Promise<ScheduleListProps | Error> => {
+const urlRelativa = endpoints.events
+
+const getAll = async (): Promise<EventListProps | Error> => {
   try {
-    const urlRelativa = `/schedule`
 
     const { data, headers } = await Api.get(urlRelativa);
 
@@ -35,9 +35,9 @@ const getAll = async (): Promise<ScheduleListProps | Error> => {
   }
 };
 
-const getById = async (id: number): Promise<ScheduleProps | Error> => {
+const getById = async (id: number): Promise<EventProps | Error> => {
   try {
-    const { data } = await Api.get(`/schedule/${id}`)
+    const { data } = await Api.get(`${urlRelativa}/${id}`)
 
     if(data) {
       return data;
@@ -51,9 +51,9 @@ const getById = async (id: number): Promise<ScheduleProps | Error> => {
   }
 };
 
-const create = async (payload: Omit<ScheduleProps, 'id'>): Promise<number | Error> => {
+const create = async (payload: Omit<EventProps, 'id'>): Promise<number | Error> => {
   try {
-    const { data } = await Api.post<ScheduleProps>('/schedule', payload);
+    const { data } = await Api.post<EventProps>('/event', payload);
 
     if(data) {
       return data.id
@@ -66,9 +66,9 @@ const create = async (payload: Omit<ScheduleProps, 'id'>): Promise<number | Erro
   }
 };
 
-const updateById = async (id: number, payload: ScheduleProps): Promise<void | Error> => {
+const updateById = async (id: number, payload: EventProps): Promise<void | Error> => {
   try {
-    const { data } = await Api.put(`/schedule/${id}`, payload);
+    const { data } = await Api.put(`/event/${id}`, payload);
 
   } catch (error) {
     console.error(error);
@@ -78,7 +78,7 @@ const updateById = async (id: number, payload: ScheduleProps): Promise<void | Er
 
 const deleteById = async (id: number): Promise<void | Error> => {
   try {
-    const { data } = await Api.delete(`/schedule/${id}`)
+    const { data } = await Api.delete(`/event/${id}`)
 
   } catch (error) {
     console.error(error);
@@ -86,7 +86,7 @@ const deleteById = async (id: number): Promise<void | Error> => {
   }
 };
 
-export const ScheduleService = {
+export const EventService = {
 getAll,
 getById,
 create,

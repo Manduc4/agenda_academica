@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import {
   CollegeFaultProps,
   CollegeFaultService,
-} from "../../../shared/services/api/CollegeFaultService/CollegeFaultSevice";
+} from "../../../shared/services/CollegeFaultService/CollegeFaultSevice";
 import { useNavigate } from "react-router-dom";
 import { Environment } from "../../../shared/environment";
 import { Box } from "@mui/material";

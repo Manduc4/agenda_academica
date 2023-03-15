@@ -16,7 +16,7 @@ import { useAppThemeContext } from "../../../shared/contexts";
 import {
   ScheduleProps,
   ScheduleService,
-} from "../../../shared/services/api/ScheduleService/ScheduleService";
+} from "../../../shared/services/ScheduleService/ScheduleService";
 
 interface Item {
   row: ScheduleProps;

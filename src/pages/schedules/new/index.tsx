@@ -14,8 +14,8 @@ import { useEffect, useState } from "react";
 import {
   ScheduleProps,
   ScheduleService,
-} from "../../../shared/services/api/ScheduleService/ScheduleService";
-import { SubjectService } from "../../../shared/services/api/SubjectService/SubjectService";
+} from "../../../shared/services/ScheduleService/ScheduleService";
+import { SubjectService } from "../../../shared/services/SubjectService/SubjectService";
 import { daysOfWeek } from "../../../shared/utils/dateAndTime";
 import { LocalizationProvider, TimePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";

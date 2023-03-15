@@ -13,13 +13,13 @@ import { Box, Stack } from "@mui/system";
 import {
   CollegeFaultProps,
   CollegeFaultService,
-} from "../../../shared/services/api/CollegeFaultService/CollegeFaultSevice";
+} from "../../../shared/services/CollegeFaultService/CollegeFaultSevice";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   SubjectProps,
   SubjectService,
-} from "../../../shared/services/api/SubjectService/SubjectService";
+} from "../../../shared/services/SubjectService/SubjectService";
 import InputMask from "react-input-mask";
 
 const NewCollegeFault: React.FC = () => {

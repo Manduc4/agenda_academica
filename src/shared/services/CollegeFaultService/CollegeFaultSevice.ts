@@ -1,21 +1,22 @@
-import { Environment } from "../../../environment";
-import { Api } from "../axios-config";
+import { Environment } from "../../environment";
+import { Api } from "../api/axios-config";
+import endpoints from "../api/endpoints";
 
-export interface SubjectProps {
+export interface CollegeFaultProps {
   id: number;
-  name: string;
-  abbreviation: string;
-  professor: string;
+  quantity: string;
+  subject: string;
   maxCollegeFaults: string;
 }
 
-export type SubjectListProps = {
-  data: SubjectProps[];
+export type CollegeFaultListProps = {
+  data: CollegeFaultProps[];
 }
 
-const getAll = async (): Promise<SubjectListProps | Error> => {
+const urlRelativa = endpoints.collegeFaults
+
+const getAll = async (): Promise<CollegeFaultListProps | Error> => {
   try {
-    const urlRelativa = `/subjects`
 
     const { data, headers } = await Api.get(urlRelativa);
 
@@ -34,9 +35,9 @@ const getAll = async (): Promise<SubjectListProps | Error> => {
   }
 };
 
-const getById = async (id: number): Promise<SubjectProps | Error> => {
+const getById = async (id: number): Promise<CollegeFaultProps | Error> => {
   try {
-    const { data } = await Api.get(`/subjects/${id}`)
+    const { data } = await Api.get(`${urlRelativa}/${id}`)
 
     if(data) {
       return data;
@@ -50,9 +51,9 @@ const getById = async (id: number): Promise<SubjectProps | Error> => {
   }
 };
 
-const create = async (payload: Omit<SubjectProps, 'id'>): Promise<number | Error> => {
+const create = async (payload: Omit<CollegeFaultProps, 'id'>): Promise<number | Error> => {
   try {
-    const { data } = await Api.post<SubjectProps>('/subjects', payload);
+    const { data } = await Api.post<CollegeFaultProps>(urlRelativa, payload);
 
     if(data) {
       return data.id
@@ -65,9 +66,9 @@ const create = async (payload: Omit<SubjectProps, 'id'>): Promise<number | Error
   }
 };
 
-const updateById = async (id: number, payload: SubjectProps): Promise<void | Error> => {
+const updateById = async (id: number, payload: CollegeFaultProps): Promise<void | Error> => {
   try {
-    const { data } = await Api.put(`/subjects/${id}`, payload);
+    const { data } = await Api.put(`${urlRelativa}/${id}`, payload);
 
   } catch (error) {
     console.error(error);
@@ -77,7 +78,7 @@ const updateById = async (id: number, payload: SubjectProps): Promise<void | Err
 
 const deleteById = async (id: number): Promise<void | Error> => {
   try {
-    const { data } = await Api.delete(`/subjects/${id}`)
+    const { data } = await Api.delete(`${urlRelativa}/${id}`)
 
   } catch (error) {
     console.error(error);
@@ -85,7 +86,7 @@ const deleteById = async (id: number): Promise<void | Error> => {
   }
 };
 
-export const SubjectService = {
+export const CollegeFaultService = {
 getAll,
 getById,
 create,

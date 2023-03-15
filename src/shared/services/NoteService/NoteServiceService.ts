@@ -1,5 +1,6 @@
-import { Environment } from "../../../environment";
-import { Api } from "../axios-config";
+import { Environment } from "../../environment";
+import { Api } from "../api/axios-config";
+import endpoints from "../api/endpoints";
 
 export interface NoteProps {
   id: number;
@@ -13,9 +14,10 @@ export type NoteListProps = {
   data: NoteProps[];
 }
 
+const urlRelativa = endpoints.notes
+
 const getAll = async (): Promise<NoteListProps | Error> => {
   try {
-    const urlRelativa = `/note`
 
     const { data, headers } = await Api.get(urlRelativa);
 
@@ -36,7 +38,7 @@ const getAll = async (): Promise<NoteListProps | Error> => {
 
 const getById = async (id: number): Promise<NoteProps | Error> => {
   try {
-    const { data } = await Api.get(`/note/${id}`)
+    const { data } = await Api.get(`${urlRelativa}/${id}`)
 
     if(data) {
       return data;
@@ -52,7 +54,7 @@ const getById = async (id: number): Promise<NoteProps | Error> => {
 
 const create = async (payload: Omit<NoteProps, 'id'>): Promise<number | Error> => {
   try {
-    const { data } = await Api.post<NoteProps>('/note', payload);
+    const { data } = await Api.post<NoteProps>(urlRelativa, payload);
 
     if(data) {
       return data.id
@@ -67,7 +69,7 @@ const create = async (payload: Omit<NoteProps, 'id'>): Promise<number | Error> =
 
 const updateById = async (id: number, payload: NoteProps): Promise<void | Error> => {
   try {
-    const { data } = await Api.put(`/note/${id}`, payload);
+    const { data } = await Api.put(`${urlRelativa}/${id}`, payload);
 
   } catch (error) {
     console.error(error);
@@ -77,7 +79,7 @@ const updateById = async (id: number, payload: NoteProps): Promise<void | Error>
 
 const deleteById = async (id: number): Promise<void | Error> => {
   try {
-    const { data } = await Api.delete(`/note/${id}`)
+    const { data } = await Api.delete(`${urlRelativa}/${id}`)
 
   } catch (error) {
     console.error(error);

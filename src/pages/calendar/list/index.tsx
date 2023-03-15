@@ -3,7 +3,7 @@ import { Box, Button, Card, Icon, Typography } from "@mui/material";
 import { LayoutBaseDePagina } from "../../../shared/layouts";
 import { Stack } from "@mui/system";
 import { useNavigate } from "react-router-dom";
-import { ScheduleService } from "../../../shared/services/api/ScheduleService/ScheduleService";
+import { ScheduleService } from "../../../shared/services/ScheduleService/ScheduleService";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import ptBrLocale from "@fullcalendar/core/locales/pt-br";
@@ -11,7 +11,7 @@ import {
   EventService,
   EventProps,
   EventListProps,
-} from "./../../../shared/services/api/EventService/EventService";
+} from "../../../shared/services/EventService/EventService";
 import dayjs from "dayjs";
 import { useSnackbar } from "notistack";
 

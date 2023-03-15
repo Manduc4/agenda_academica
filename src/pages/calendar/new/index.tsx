@@ -11,7 +11,7 @@ import { LayoutBaseDePagina } from "../../../shared/layouts";
 import { Box, Stack } from "@mui/system";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { SubjectService } from "../../../shared/services/api/SubjectService/SubjectService";
+import { SubjectService } from "../../../shared/services/SubjectService/SubjectService";
 import { daysOfWeek } from "../../../shared/utils/dateAndTime";
 import {
   DatePicker,
@@ -25,7 +25,7 @@ import {
   EventListProps,
   EventProps,
   EventService,
-} from "./../../../shared/services/api/EventService/EventService";
+} from "../../../shared/services/EventService/EventService";
 
 const NewEvent: React.FC = () => {
   // edit

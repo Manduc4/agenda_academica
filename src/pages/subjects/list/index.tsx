@@ -21,7 +21,7 @@ import { useEffect, useState } from "react";
 import {
   SubjectProps,
   SubjectService,
-} from "../../../shared/services/api/SubjectService/SubjectService";
+} from "../../../shared/services/SubjectService/SubjectService";
 import { useNavigate } from "react-router-dom";
 import { Environment } from "../../../shared/environment";
 import { Box } from "@mui/system";
@@ -62,6 +62,9 @@ export const SubjectList = () => {
       .catch((error) => {
         console.log("error", error);
       });
+      enqueueSnackbar('teste', {
+        variant: 'error'
+      })
   }, []);
 
   return (
