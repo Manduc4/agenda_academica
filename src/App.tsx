@@ -11,7 +11,7 @@ export const App = () => {
   return (
     <AppThemeProvider>
       <DrawerProvider>
-        <BrowserRouter>
+        <BrowserRouter basename="/">
           <DashboardLayout>
             <AppRoutes />
           </DashboardLayout>
