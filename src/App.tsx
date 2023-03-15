@@ -1,5 +1,5 @@
 import AppRoutes from "./routes";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, HashRouter, Route, Routes } from "react-router-dom";
 import { AppThemeProvider, DrawerProvider } from "./shared/contexts";
 import { DashboardLayout } from "./shared/components/dashboard-layout";
 import { useEffect } from "react";
@@ -11,11 +11,11 @@ export const App = () => {
   return (
     <AppThemeProvider>
       <DrawerProvider>
-        <BrowserRouter basename="/">
+        <HashRouter basename="/">
           <DashboardLayout>
             <AppRoutes />
           </DashboardLayout>
-        </BrowserRouter>
+        </HashRouter>
       </DrawerProvider>
     </AppThemeProvider>
   );
